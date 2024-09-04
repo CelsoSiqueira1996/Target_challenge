@@ -37,9 +37,9 @@
             acumulador += sequencia[indice];
         }
         if (sequencia[sequencia.length - 1] == valorInformado) {
-            alert(`A sequência de Fibonacci gerada é: ${sequencia.join()}.\nO número informado ${input.value} pertence à sequência.`);
+            alert(`A sequência de Fibonacci gerada é: ${sequencia.join(", ")}.\nO número informado ${input.value} pertence à sequência.`);
         } else {
-            alert(`A sequência de Fibonacci gerada é: ${sequencia.join()}.\nO número informado ${input.value} não pertence à sequência.`);
+            alert(`A sequência de Fibonacci gerada é: ${sequencia.join(", ")}.\nO número informado ${input.value} não pertence à sequência.`);
         }
 
         input.value = "";
