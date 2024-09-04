@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Target Challenge</title>
+</head>
+
+<body>
+    <h1 style="text-align: center;">Representatividade em percentual de cada estado no faturamento mensal:</h1>
+    <div style="flex-direction: row; flex-wrap: wrap;">
+        <button class="gerar_relatorio_faturamento_estados">Gerar relatório de faturamento</button>
+    </div>
+</body>
+<script>
+    const containerFaturamento = document.querySelector('div');
+    const button = document.querySelector('.gerar_relatorio_faturamento_estados');
+
+    const faturamentoMensalPorEstado = [{
+        estado: 'SP',
+        faturamento: 67836.43
+    },
+    {
+        estado: 'RJ',
+        faturamento: 36678.66
+    },
+    {
+        estado: 'MG',
+        faturamento: 29229.88
+    },
+    {
+        estado: 'ES',
+        faturamento: 27165.48
+    },
+    {
+        estado: 'Outros',
+        faturamento: 19849.53
+    }]
+
+    function gerarRelatorioFaturamentoEstados() {
+        const dados = containerFaturamento.querySelectorAll('span');
+        dados.forEach((dado) => dado.remove());
+
+        const faturamentoTotal = faturamentoMensalPorEstado.reduce((acc, { faturamento }) => {
+            return acc + faturamento;
+        }, 0);
+
+        faturamentoMensalPorEstado.forEach(({ estado, faturamento }) => {
+            const retorno = `${estado} - ${(faturamento * 100 / faturamentoTotal)}%`;
+            const retornoArredondado = `${estado} - ${(faturamento * 100 / faturamentoTotal).toFixed(2)}%`;
+            const span = document.createElement('span');
+            span.title = retorno;
+            span.style = 'width: auto;'
+            span.textContent = retornoArredondado;
+            containerFaturamento.insertBefore(span, button);
+        })
+    }
+    
+    button.onclick = gerarRelatorioFaturamentoEstados;   
+</script>
+
+</html>

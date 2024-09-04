@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Target Challenge</title>
+</head>
+
+<body>
+    <div>
+        <h1>Resultados para o mês informado:</h1>
+        <p>Menor faturamento do mês:</p>
+        <span class="menor_valor_faturamento"></span>
+        <p>Maior faturamento do mês:</p>
+        <span class="maior_valor_faturamento"></span>
+        <p>Dias de faturamento acima da média:</p>
+        <span class="numero_dias_faturamento_maior_media"></span>
+        <button class="gerar_relatorio_faturamento">Gerar relatório de faturamento</button>
+    </div>
+</body>
+<script>
+    const menorFaturameno = document.querySelector('.menor_valor_faturamento');
+    const maiorFaturameno = document.querySelector('.maior_valor_faturamento');
+    const diasFaturamentoAcimaDaMedia = document.querySelector('.numero_dias_faturamento_maior_media');
+
+    function gerarRelatorioFaturamento() {
+        const dados = [];
+        fetch('./dados.json').then(resposta => resposta.json()).then(data => {
+            dados.push(...data);
+            const dadosFiltrados = dados.filter((dado) => dado.valor != 0);
+            const infosFaturamento = dadosFiltrados.reduce((acc, { valor }) => {
+                acc.valorTotal += valor;
+                acc.valorMax = (acc.valorMax > valor)? acc.valorMax : valor;
+                acc.valorMin = (acc.valorMin > valor || acc.valorMin == 0)? valor : acc.valorMin;
+                return acc;
+            }, {
+                valorTotal: 0,
+                valorMax: 0,
+                valorMin: 0
+            });
+    
+            infosFaturamento.media = infosFaturamento.valorTotal / dadosFiltrados.length;
+            const diasAcimaDaMedia = dadosFiltrados.reduce((acc, { valor }) => {
+                if(valor > infosFaturamento.media) {
+                    acc++
+                }
+                return acc;
+            }, 0);
+    
+            infosFaturamento.diasAcimaDaMedia = diasAcimaDaMedia;
+    
+            menorFaturameno.textContent = `${infosFaturamento.valorMin.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+            maiorFaturameno.textContent = `${infosFaturamento.valorMax.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+            diasFaturamentoAcimaDaMedia.textContent = `${infosFaturamento.diasAcimaDaMedia}`;
+    
+        });
+
+    }
+
+    const button = document.querySelector('.gerar_relatorio_faturamento');
+    button.onclick = gerarRelatorioFaturamento;
+</script>
+
+</html>

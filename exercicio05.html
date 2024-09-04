@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Target Challenge</title>
+</head>
+<body>
+    <div>
+        <input class="entrada_string_usuario" placeholder="Informe uma palavra...">
+        <button class="inverte_string">Clique aqui para inverter a string!</button>
+    </div>
+</body>
+<script>
+    input = document.querySelector('.entrada_string_usuario');
+    input.focus();
+
+    function inverteString() {
+        const palavraInformada = input.value;
+        let resultado = "";
+        for(let contador = palavraInformada.length - 1; contador >= 0; contador--) {
+            resultado += palavraInformada[contador];
+        }
+
+        alert(`Resultado: ${resultado}`);
+        input.value = "";
+        input.focus();
+        return;
+    }
+
+    const button = document.querySelector('.inverte_string');
+    button.onclick = inverteString;
+</script>
+</html>
